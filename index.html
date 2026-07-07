@@ -4,7 +4,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>תרגול למבחן — ניהול מערכות תובלה ושינוע</title>
-<meta name="description" content="אפליקציית תרגול למבחן ניהול מערכות תובלה ושינוע — בר אילן">
 </head>
 <body>
 <div id="app" dir="rtl"></div>
@@ -261,10 +260,16 @@ function renderStart(){
   document.getElementById("startBtn").addEventListener("click", startQuiz);
 }
 
+function shuffleOptions(q){
+  // randomize option order each session and remap the correct index — removes positional bias
+  const order = shuffle(q.o.map((_,i)=>i));
+  return {...q, o: order.map(i=>q.o[i]), a: order.indexOf(q.a)};
+}
 function startQuiz(){
   let pool = state.profOnly ? QUESTIONS.filter(q=>q.prof) : QUESTIONS.filter(q=>state.selectedUnits.has(q.u));
   if(!pool.length) return;
   if(state.shuffle) pool = shuffle(pool);
+  pool = pool.map(shuffleOptions);
   state.pool = pool; state.idx=0; state.score=0; state.answered=false; state.chosen=null; state.log=[];
   renderQuestion();
 }
