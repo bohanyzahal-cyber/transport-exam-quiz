@@ -4,23 +4,32 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>תרגול למבחן — ניהול מערכות תובלה ושינוע</title>
+<meta name="description" content="תרגול, דף עזר, מיקוד ובנק שאלות למבחן ניהול מערכות תובלה ושינוע — בר אילן">
 </head>
 <body>
-<!DOCTYPE html>
-<html lang="he" dir="rtl">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>תרגול למבחן — ניהול מערכות תובלה ושינוע</title>
-</head>
-<body>
-<div id="app" dir="rtl"></div>
+<div id="app" dir="rtl">
+  <header class="topbar" id="topbar">
+    <div class="topbar-in">
+      <div class="brand">
+        <span class="brand-mark">🚚</span>
+        <span class="brand-txt"><b>תובלה ושינוע</b><i>ד״ר אורן נחום · בר-אילן</i></span>
+      </div>
+      <nav class="tabs" id="tabs">
+        <button class="tab is-on" data-view="quiz">תרגול</button>
+        <button class="tab" data-view="cheat">דף עזר</button>
+        <button class="tab" data-view="guide">מיקוד</button>
+        <button class="tab" data-view="bank">כל השאלות</button>
+      </nav>
+    </div>
+  </header>
+  <main id="main"></main>
+</div>
 
 <style>
   :root{
     --ink:#16233a; --primary:#1f4e79; --primary-2:#2f6ca8;
     --accent:#e0842c; --good:#1e7a33; --good-bg:#e8f5ec; --bad:#b01a1a; --bad-bg:#fbeaea;
-    --ground:#eef1f5; --surface:#ffffff; --line:#d9dfe7; --muted:#5b6675;
+    --ground:#eef1f5; --surface:#fff; --line:#d9dfe7; --muted:#5b6675;
     --u1:#1f4e79; --u2:#0f8b8b; --u3:#6a4bb0; --u4:#c9781f; --u5:#1e7a33;
     --shadow:0 1px 2px rgba(22,35,58,.06), 0 8px 24px rgba(22,35,58,.08);
     --radius:14px;
@@ -34,32 +43,70 @@
       var(--ground);
     min-height:100vh; line-height:1.55; -webkit-font-smoothing:antialiased;
   }
-  .wrap{max-width:760px; margin:0 auto; padding:20px 16px 60px}
-  .btn{font:inherit; cursor:pointer; border:1px solid transparent; border-radius:10px; padding:11px 18px; font-weight:600; transition:transform .08s ease, background .15s, box-shadow .15s}
+  .wrap{max-width:820px; margin:0 auto; padding:18px 16px 60px}
+  .btn{font:inherit; cursor:pointer; border:1px solid transparent; border-radius:10px; padding:11px 18px; font-weight:600; transition:transform .08s, background .15s, box-shadow .15s}
   .btn:active{transform:translateY(1px)}
   .btn-primary{background:var(--primary); color:#fff; box-shadow:0 6px 16px rgba(31,78,121,.28)}
   .btn-primary:hover{background:var(--primary-2)}
   .btn-ghost{background:var(--surface); color:var(--primary); border-color:var(--line)}
-  .btn-ghost:hover{border-color:var(--primary-2); color:var(--primary-2)}
+  .btn-ghost:hover{border-color:var(--primary-2)}
   .btn:focus-visible{outline:3px solid rgba(224,132,44,.5); outline-offset:2px}
 
-  /* ---- Start screen ---- */
+  /* ---------- top bar ---------- */
+  .topbar{position:sticky; top:0; z-index:20; background:rgba(255,255,255,.92); backdrop-filter:blur(10px); border-bottom:1px solid var(--line)}
+  .topbar-in{max-width:820px; margin:0 auto; padding:9px 16px; display:flex; align-items:center; gap:14px; flex-wrap:wrap}
+  .brand{display:flex; align-items:center; gap:9px}
+  .brand-mark{font-size:21px}
+  .brand-txt{display:flex; flex-direction:column; line-height:1.15}
+  .brand-txt b{font-size:14.5px}
+  .brand-txt i{font-style:normal; font-size:11px; color:var(--muted)}
+  .tabs{display:flex; gap:4px; margin-inline-start:auto; flex-wrap:wrap}
+  .tab{font:inherit; font-size:13.5px; font-weight:600; cursor:pointer; border:1px solid transparent; background:transparent; color:var(--muted); border-radius:9px; padding:7px 13px; transition:.15s}
+  .tab:hover{color:var(--primary); background:rgba(31,78,121,.06)}
+  .tab.is-on{background:var(--primary); color:#fff}
+  .tab:focus-visible{outline:3px solid rgba(224,132,44,.5); outline-offset:2px}
+
+  /* ---------- doc pages (cheat / guide / bank) ---------- */
+  .page-head{display:flex; align-items:flex-start; justify-content:space-between; gap:14px; flex-wrap:wrap; margin-bottom:14px}
+  .page-head h1{margin:0 0 4px; font-size:24px; font-weight:800; letter-spacing:-.01em}
+  .page-head p{margin:0; color:var(--muted); font-size:13.5px}
+  .sheet{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); padding:22px 24px}
+  .sheet + .sheet{margin-top:14px}
+  .sheet h2{margin:0 0 10px; font-size:16px; font-weight:800; color:var(--primary); padding-bottom:5px; border-bottom:2px solid var(--primary)}
+  .sheet h2.warn{color:var(--bad); border-color:var(--bad)}
+  .sheet h2.ok{color:var(--good); border-color:var(--good)}
+  .sheet h2.amber{color:#9a5a0f; border-color:#9a5a0f}
+  .sheet h3{margin:13px 0 5px; font-size:14px; font-weight:700; color:var(--primary)}
+  .sheet h3:first-of-type{margin-top:4px}
+  .ln{margin:0 0 5px; font-size:13.7px}
+  .ln b{color:#143355}
+  .ln.hot b{color:var(--bad)}
+  .ln.cool b{color:var(--good)}
+  table.tb{width:100%; border-collapse:collapse; font-size:13px; margin:2px 0 4px}
+  table.tb th{background:var(--primary); color:#fff; text-align:right; padding:7px 9px; font-weight:700; font-size:12.5px}
+  table.tb td{border:1px solid var(--line); padding:6px 9px; vertical-align:top}
+  table.tb tr:nth-child(even) td{background:#f7f9fb}
+  .tb-scroll{overflow-x:auto}
+  .unit-line{border-inline-start:3px solid var(--line); padding-inline-start:9px; margin-bottom:9px}
+  .unit-line.u1{border-color:var(--u1)} .unit-line.u2{border-color:var(--u2)} .unit-line.u3{border-color:var(--u3)}
+  .unit-line.u4{border-color:var(--u4)} .unit-line.u5{border-color:var(--u5)}
+
+  /* ---------- quiz ---------- */
   .hero{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); overflow:hidden}
-  .hero-top{background:linear-gradient(135deg,#1b3a5c,#1f4e79 55%,#2f6ca8); color:#fff; padding:30px 26px 26px; position:relative}
-  .hero-top::after{content:""; position:absolute; inset:0; background-image:repeating-linear-gradient(90deg, rgba(255,255,255,.12) 0 22px, transparent 22px 44px); bottom:0; height:6px; top:auto; opacity:.6}
-  .kicker{font-size:12.5px; letter-spacing:.14em; text-transform:uppercase; color:#bcd4ec; font-weight:700; margin-bottom:8px}
-  .hero-top h1{margin:0; font-size:29px; font-weight:800; letter-spacing:-.01em; text-wrap:balance}
-  .hero-sub{margin:8px 0 0; color:#d5e4f2; font-size:14.5px}
-  .hero-body{padding:22px 26px 26px}
-  .field-label{font-size:12.5px; font-weight:700; color:var(--muted); letter-spacing:.03em; margin:0 0 9px}
-  .chips{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px}
+  .hero-top{background:linear-gradient(135deg,#1b3a5c,#1f4e79 55%,#2f6ca8); color:#fff; padding:28px 26px 24px}
+  .kicker{font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:#bcd4ec; font-weight:700; margin-bottom:7px}
+  .hero-top h1{margin:0; font-size:27px; font-weight:800; text-wrap:balance}
+  .hero-sub{margin:7px 0 0; color:#d5e4f2; font-size:14px}
+  .hero-body{padding:20px 24px 24px}
+  .field-label{font-size:12.5px; font-weight:700; color:var(--muted); margin:0 0 8px}
+  .chips{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:18px}
   .chip{border:1px solid var(--line); background:#fff; border-radius:999px; padding:8px 14px; font-size:13.5px; font-weight:600; cursor:pointer; color:var(--ink); display:flex; align-items:center; gap:7px; transition:.15s}
-  .chip .dot{width:9px; height:9px; border-radius:50%}
+  .chip .dot{width:9px;height:9px;border-radius:50%}
   .chip[aria-pressed="true"]{border-color:var(--primary); background:rgba(31,78,121,.08); color:var(--primary)}
   .chip:focus-visible{outline:3px solid rgba(224,132,44,.5); outline-offset:2px}
-  .toggle-row{display:flex; align-items:center; justify-content:space-between; gap:12px; padding:13px 15px; border:1px solid var(--line); border-radius:11px; margin-bottom:22px; background:#fbfcfd}
-  .toggle-row .t-txt{font-size:13.5px}
-  .toggle-row .t-txt b{display:block; font-size:14.5px}
+  .toggle-row{display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 15px; border:1px solid var(--line); border-radius:11px; margin-bottom:16px; background:#fbfcfd}
+  .toggle-row .t-txt{font-size:13px}
+  .toggle-row .t-txt b{display:block; font-size:14px}
   .switch{position:relative; width:48px; height:27px; flex:none}
   .switch input{opacity:0; width:0; height:0}
   .slider{position:absolute; inset:0; background:#c3ccd6; border-radius:999px; transition:.2s; cursor:pointer}
@@ -68,62 +115,93 @@
   .switch input:checked + .slider::before{transform:translateX(-21px)}
   .start-meta{display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap}
   .start-meta .count{color:var(--muted); font-size:13.5px}
-
-  /* ---- Quiz header ---- */
-  .qhead{position:sticky; top:0; z-index:5; background:rgba(238,241,245,.86); backdrop-filter:blur(8px); padding:12px 16px; border-bottom:1px solid var(--line); margin:-20px -16px 18px}
-  .qhead-in{max-width:760px; margin:0 auto; display:flex; align-items:center; gap:12px}
+  .qhead{position:sticky; top:52px; z-index:6; background:rgba(238,241,245,.9); backdrop-filter:blur(8px); padding:11px 16px; border-bottom:1px solid var(--line); margin:-18px -16px 16px}
+  .qhead-in{max-width:820px; margin:0 auto; display:flex; align-items:center; gap:12px}
   .progress{flex:1; height:8px; background:#dbe2ea; border-radius:999px; overflow:hidden}
   .progress > i{display:block; height:100%; background:linear-gradient(90deg,var(--primary),var(--accent)); border-radius:999px; transition:width .35s cubic-bezier(.4,0,.2,1)}
   .counter{font-size:13px; font-weight:700; color:var(--muted); font-variant-numeric:tabular-nums; white-space:nowrap}
   .score-chip{display:flex; align-items:center; gap:6px; background:var(--surface); border:1px solid var(--line); border-radius:999px; padding:5px 11px; font-size:13px; font-weight:700; font-variant-numeric:tabular-nums; color:var(--good)}
-
-  /* ---- Question card ---- */
   .card{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); padding:22px; animation:pop .25s ease}
   @keyframes pop{from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:none}}
-  .badge{display:inline-flex; align-items:center; gap:7px; font-size:12px; font-weight:700; letter-spacing:.02em; color:#fff; padding:4px 11px; border-radius:999px; margin-bottom:14px}
+  .badge{display:inline-flex; align-items:center; gap:7px; font-size:12px; font-weight:700; color:#fff; padding:4px 11px; border-radius:999px; margin-bottom:13px}
   .badge-prof{background:#fff4e2 !important; color:#a35a12; border:1px solid #f0cf9a; margin-inline-start:7px}
-  .scenario{background:#f4f7fa; border:1px solid #e5ebf1; border-right:3px solid var(--primary); border-radius:8px; padding:12px 14px; font-size:14.5px; color:#374559; margin-bottom:14px}
-  .qtext{font-size:18px; font-weight:700; line-height:1.5; margin:0 0 16px; text-wrap:balance}
+  .scenario{background:#f4f7fa; border:1px solid #e5ebf1; border-right:3px solid var(--primary); border-radius:8px; padding:12px 14px; font-size:14.5px; color:#374559; margin-bottom:13px}
+  .qtext{font-size:18px; font-weight:700; line-height:1.5; margin:0 0 15px; text-wrap:balance}
   .opts{display:flex; flex-direction:column; gap:10px}
   .opt{display:flex; align-items:flex-start; gap:11px; text-align:right; width:100%; background:#fff; border:1.5px solid var(--line); border-radius:11px; padding:13px 14px; font:inherit; font-size:15px; cursor:pointer; transition:.14s; color:var(--ink)}
   .opt:hover:not(:disabled){border-color:var(--primary-2); background:#f7fafd}
   .opt:disabled{cursor:default}
   .opt:focus-visible{outline:3px solid rgba(224,132,44,.5); outline-offset:2px}
-  .opt .lt{flex:none; width:26px; height:26px; border-radius:7px; background:#eef2f6; color:var(--muted); font-weight:800; font-size:14px; display:grid; place-items:center; transition:.14s}
+  .opt .lt{flex:none; width:26px; height:26px; border-radius:7px; background:#eef2f6; color:var(--muted); font-weight:800; font-size:14px; display:grid; place-items:center}
   .opt .ot{padding-top:2px}
   .opt.correct{border-color:var(--good); background:var(--good-bg)}
   .opt.correct .lt{background:var(--good); color:#fff}
   .opt.wrong{border-color:var(--bad); background:var(--bad-bg)}
   .opt.wrong .lt{background:var(--bad); color:#fff}
   .mark{margin-inline-start:auto; font-weight:800; align-self:center; font-size:17px}
-  .opt.correct .mark{color:var(--good)}
-  .opt.wrong .mark{color:var(--bad)}
-
-  .explain{margin-top:15px; border-radius:11px; padding:14px 15px; font-size:14.5px; line-height:1.55; animation:pop .3s ease; border:1px solid}
+  .opt.correct .mark{color:var(--good)} .opt.wrong .mark{color:var(--bad)}
+  .explain{margin-top:14px; border-radius:11px; padding:14px 15px; font-size:14.5px; animation:pop .3s ease; border:1px solid}
   .explain.ok{background:var(--good-bg); border-color:#bfe3c9}
   .explain.no{background:var(--bad-bg); border-color:#eecccc}
-  .explain b{display:block; margin-bottom:4px; font-size:13.5px; letter-spacing:.02em}
+  .explain b{display:block; margin-bottom:4px; font-size:13.5px}
   .explain.ok b{color:var(--good)} .explain.no b{color:var(--bad)}
-  .nav{display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top:18px}
+  .nav{display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top:17px}
   .hint{color:var(--muted); font-size:13px}
-
-  /* ---- Results ---- */
-  .result{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); padding:0; overflow:hidden; text-align:center}
-  .result-top{padding:32px 24px 26px; color:#fff; background:linear-gradient(135deg,#1b3a5c,#1f4e79 60%,#2f6ca8)}
-  .ring{--v:0; width:132px; height:132px; border-radius:50%; margin:6px auto 14px; display:grid; place-items:center;
-    background:conic-gradient(var(--accent) calc(var(--v)*1%), rgba(255,255,255,.22) 0)}
-  .ring i{width:104px; height:104px; border-radius:50%; background:#1c3f61; display:grid; place-items:center; font-size:30px; font-weight:800; font-variant-numeric:tabular-nums; font-style:normal}
-  .result-top h2{margin:0; font-size:23px; font-weight:800}
-  .result-top p{margin:6px 0 0; color:#d5e4f2; font-size:14.5px}
-  .breakdown{padding:22px 24px}
-  .bd-row{display:grid; grid-template-columns:1fr auto; gap:6px 12px; align-items:center; margin-bottom:13px}
+  .result{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); overflow:hidden; text-align:center}
+  .result-top{padding:30px 24px 24px; color:#fff; background:linear-gradient(135deg,#1b3a5c,#1f4e79 60%,#2f6ca8)}
+  .ring{--v:0; width:130px; height:130px; border-radius:50%; margin:6px auto 13px; display:grid; place-items:center; background:conic-gradient(var(--accent) calc(var(--v)*1%), rgba(255,255,255,.22) 0)}
+  .ring i{width:102px; height:102px; border-radius:50%; background:#1c3f61; display:grid; place-items:center; font-size:29px; font-weight:800; font-variant-numeric:tabular-nums; font-style:normal}
+  .result-top h2{margin:0; font-size:22px; font-weight:800}
+  .result-top p{margin:6px 0 0; color:#d5e4f2; font-size:14px}
+  .breakdown{padding:20px 24px}
+  .bd-row{display:grid; grid-template-columns:1fr auto; gap:6px 12px; align-items:center; margin-bottom:12px}
   .bd-name{font-size:14px; font-weight:600; display:flex; align-items:center; gap:8px}
   .bd-name .dot{width:10px;height:10px;border-radius:50%}
   .bd-val{font-size:13px; font-weight:700; color:var(--muted); font-variant-numeric:tabular-nums}
   .bd-bar{grid-column:1 / -1; height:8px; background:#e5eaf0; border-radius:999px; overflow:hidden}
   .bd-bar > i{display:block; height:100%; border-radius:999px}
-  .result-actions{display:flex; gap:10px; justify-content:center; flex-wrap:wrap; padding:4px 24px 26px}
-  .foot{text-align:center; color:var(--muted); font-size:12.5px; margin-top:22px}
+  .result-actions{display:flex; gap:10px; justify-content:center; flex-wrap:wrap; padding:4px 24px 24px}
+  .foot{text-align:center; color:var(--muted); font-size:12.5px; margin-top:20px}
+
+  /* ---------- question bank (printable) ---------- */
+  .bank-q{padding:11px 0; border-bottom:1px solid var(--line); break-inside:avoid; page-break-inside:avoid}
+  .bank-q:last-child{border-bottom:0}
+  .bank-n{font-weight:800; color:var(--primary); font-size:13.5px}
+  .bank-star{color:#a35a12; font-size:11.5px; font-weight:700; margin-inline-start:6px}
+  .bank-s{color:var(--muted); font-size:13px; margin:3px 0}
+  .bank-qt{font-weight:700; font-size:14px; margin:3px 0 5px}
+  .bank-o{font-size:13.3px; margin:0 0 2px; padding-inline-start:16px}
+  .bank-o.is-ans{font-weight:700; color:var(--good)}
+  .bank-e{font-size:12.8px; color:#3d4a5c; background:#f5f8fa; border-inline-start:3px solid var(--good); padding:6px 9px; border-radius:6px; margin-top:5px}
+  .hide-ans .bank-o.is-ans{font-weight:inherit; color:inherit}
+  .hide-ans .bank-e{display:none}
+
+  /* ---------- PRINT ---------- */
+  @media print{
+    @page{size:A4; margin:11mm}
+    #app{background:#fff !important}
+    .topbar, .tabs, .btn, .page-head .actions, .qhead{display:none !important}
+    .wrap{max-width:100%; padding:0}
+    .sheet{box-shadow:none; border:0; border-radius:0; padding:0; margin:0 0 8px}
+    .sheet + .sheet{margin-top:8px}
+    .sheet h2{font-size:12.5pt; margin:8px 0 5px; break-after:avoid; page-break-after:avoid}
+    .sheet h3{font-size:10.5pt; margin:7px 0 3px; break-after:avoid}
+    .ln{font-size:8.6pt; margin-bottom:2px}
+    table.tb{font-size:8.3pt; page-break-inside:auto}
+    table.tb th{padding:3px 5px; font-size:8.3pt; -webkit-print-color-adjust:exact; print-color-adjust:exact}
+    table.tb td{padding:3px 5px}
+    table.tb tr{break-inside:avoid; page-break-inside:avoid}
+    .page-head h1{font-size:15pt; margin-bottom:2px}
+    .page-head p{font-size:8.5pt}
+    .unit-line{margin-bottom:5px}
+    .bank-q{padding:6px 0; font-size:9pt}
+    .bank-qt{font-size:9.4pt}
+    .bank-o{font-size:9pt}
+    .bank-e{font-size:8.4pt; background:transparent; padding:3px 6px}
+    .print-only{display:block !important}
+    a[href]:after{content:""}
+  }
+  .print-only{display:none}
 </style>
 
 <script>
@@ -201,170 +279,376 @@ const QUESTIONS = [
 {u:5,s:"מתכנן מסלולי הפצה משווה בין רשת של כבישים חד-סטריים לרשת של כבישים דו-סטריים.",q:"איזו טענה נכונה לגבי מורכבות בעיית הניתוב?",o:["רשת דו-סטרית מורכבת וקשה יותר לפתרון, כי ההלוך שונה מהחזור ולמעשה היא מכפילה את מספר הקשתות ברשת","רשת חד-סטרית מורכבת יותר, מכיוון שהיא מגבילה את כיווני הנסיעה ומחייבת מסלולי עקיפה ארוכים","אין הבדל במורכבות בין שתי הרשתות, מכיוון שמספר הקודקודים בשתיהן נשאר זהה לחלוטין","רשת דו-סטרית היא תמיד חסרת פתרון, ולכן חייבים להמיר אותה לרשת חד-סטרית לפני הפתרון"],a:0,e:"בכביש דו-סטרי כל קטע מתפצל לשני כיוונים (הלוך≠חזור), מה שמכפיל את מספר הקשתות ומגדיל את מורכבות הבעיה. רשת חד-סטרית פשוטה יותר."}
 ];
 
-const UNITS = {
-  1:{name:"מבוא לתובלה ושינוע", color:"var(--u1)", hex:"#1f4e79"},
-  2:{name:"מידע מרחבי", color:"var(--u2)", hex:"#0f8b8b"},
-  3:{name:"זרימה ברשתות", color:"var(--u3)", hex:"#6a4bb0"},
-  4:{name:"מיקום מתקנים", color:"var(--u4)", hex:"#c9781f"},
-  5:{name:"ניתוב רכבים", color:"var(--u5)", hex:"#1e7a33"}
+const UNITS={
+  1:{name:"מבוא לתובלה ושינוע",hex:"#1f4e79"},
+  2:{name:"מידע מרחבי",hex:"#0f8b8b"},
+  3:{name:"זרימה ברשתות",hex:"#6a4bb0"},
+  4:{name:"מיקום מתקנים",hex:"#c9781f"},
+  5:{name:"ניתוב רכבים",hex:"#1e7a33"}
 };
-const LETTERS = ["א","ב","ג","ד","ה"];
-const app = document.getElementById("app");
+const LETTERS=["א","ב","ג","ד","ה"];
+const PROF_COUNT=QUESTIONS.filter(q=>q.prof).length;
+const main=document.getElementById("main");
+const esc=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
 
-let state = { pool:[], idx:0, score:0, answered:false, chosen:null, selectedUnits:new Set([1,2,3,4,5]), shuffle:true, profOnly:false, log:[] };
-const PROF_COUNT = QUESTIONS.filter(q=>q.prof).length;
+let view="quiz";
+let state={pool:[],idx:0,score:0,answered:false,selectedUnits:new Set([1,2,3,4,5]),shuffle:true,profOnly:false,log:[]};
 
-function shuffle(arr){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function shuffleOptions(q){const o=shuffle(q.o.map((_,i)=>i));return {...q,o:o.map(i=>q.o[i]),a:o.indexOf(q.a)};}
 
-function renderStart(){
-  const counts = {}; QUESTIONS.forEach(q=>counts[q.u]=(counts[q.u]||0)+1);
-  const chips = Object.entries(UNITS).map(([u,info])=>{
-    const on = state.selectedUnits.has(+u);
-    return `<button class="chip" role="button" aria-pressed="${on}" data-unit="${u}">
-      <span class="dot" style="background:${info.hex}"></span>${info.name} <span style="color:var(--muted);font-weight:600">(${counts[u]||0})</span></button>`;
+/* =============== CHEAT SHEET =============== */
+const DECISIONS=[
+["סך היצע > סך ביקוש (לא מאוזן)","הוסף יעד/לקוח פיקטיבי, עלות 0"],
+["סך ביקוש > סך היצע (לא מאוזן)","הוסף מקור/ספק פיקטיבי, עלות 0"],
+["סחורה עוברת דרך מרלו\"ג/נמל בדרך ליעד","בעיית שיטעון (יש קודקודי מעבר)"],
+["משלוח ישיר מספק ללקוח","בעיית תובלה"],
+["מה מתקיים בקודקוד מעבר?","שימור זרימה: נכנס = יוצא (מאזן 0)"],
+["התאמה 1:1, כל היצע=ביקוש=1","בעיית שיבוץ (מקרה פרטי של תובלה)"],
+["כמה אפשר להעביר מ-S ל-T עם קיבולות","זרימה מקסימלית = חתך מינימלי"],
+["כמה מקורות/יעדים בבעיית זרימה","מקור-על + יעד-על, קיבולת ∞"],
+["מסלול מ-A ל-B בלבד","מסלול קצר ביותר ← דייקסטרה (אופטימלי)"],
+["לעבור בכל הקודקודים ולחזור","סוכן נוסע (TSP) — NP-Hard"],
+["לעבור בכל הקשתות / הרחובות","מחלק הדואר הסיני"],
+["כמה רכבים + אילוץ קיבולת","ניתוב רכבים (VRP)"],
+["רוצים חלופות אם המסלול חסום","K-Shortest Paths"],
+["JIT / מלאי מינימלי / אספקה תכופה","מחסנים קרובים ללקוח"],
+["למזער סכום מרחקים משוקלל בביקוש","P-Median"],
+["למזער מרחק ללקוח המרוחק ביותר","Max-Min"],
+["למקסם ביקוש מכוסה בטווח נתון","כיסוי מקסימלי"],
+["מיקום מתקן יחיד, מרחק לאורך צירים","חציון משוקלל (לא ממוצע!)"],
+["150 לקוחות / בעיה גדולה מדי","היוריסטיקה (NP-קשה ← אין זמן לאופטימום)"]
+];
+const TRAPS=[
+["דייקסטרה:","אופטימלי רק ללא משקלים שליליים. הסיבה: חמדני — קודקוד ש\"ננעל\" כקבוע לא מתעדכן יותר, גם אם קשת שלילית מאוחרת פותחת מסלול קצר יותר.",1],
+["דייקסטרה מוצא:","מסלולים מקודקוד מוצא אחד לכל שאר הקודקודים (בבת אחת) — לא רק בין שני קודקודים!",0],
+["חמדני:","אופטימום מקומי בכל צעד. בדייקסטרה ← אופטימלי. ב-TSP ← רק קירוב. לא \"תמיד אופטימלי\" ולא \"אקראי\".",0],
+["TSP מול מחלק הדואר:","TSP = כל הקודקודים · מחלק הדואר = כל הקשתות. (טאטוא/אשפה = קשתות)",1],
+["מ-TSP ל-VRP:","האילוץ שמתווסף = קיבולת הרכב ← מחייב כמה רכבים וכמה מסלולים.",1],
+["שיטעון:","ההבדל המהותי = קודקודי ביניים עם שימור זרימה. (\"שטח אחסון אינסופי\" היא הנחת מודל — לא ההבדל המהותי!)",1],
+["היצע ≠ ביקוש:","המודל לא הופך ללא-פתיר ופונקציית המטרה לא שלילית — פשוט מאזנים בצומת פיקטיבי.",0],
+["שכן קרוב (TSP):","S_opt ≤ S_alg ≤ 2·S_opt. מהיר וסביר — לא אופטימלי. שינוי נקודת התחלה ← מסלול אחר.",0],
+["Brute Force:","מבטיח אופטימום אך בלתי מעשי (גידול עצרתי). לכן היוריסטיקות.",0],
+["עלות מול מרחק:","המיקום הזול אינו הקרוב ביותר ולא הרחוק ביותר — עקומת U, מינימום בנקודת ביניים.",1],
+["קנה מידה:","מספר קטן במכנה = קנ\"מ גדול = יותר פירוט (1:500 מפורט מ-1:250,000).",0]
+];
+const FORMULAS=[
+["זרימת תנועה:","q = S × D (זרימה = מהירות × צפיפות) · שיא כאשר D = Dj/2 · לכל ערך זרימה (למעט השיא) יש שתי צפיפויות ושתי מהירויות."],
+["קיבולת (יר\"מ/נתיב/שעה):","מהירה 2,000 · עורקית 1,500 · מאספת 750 · מקומית 250."],
+["יר\"מ (מקדמים):","פרטי 1 · משא 1.7 מישור / 8 הר / 2 צומת · אוטובוס 1.5 / 5 / 1.8 · אופנוע 0.8."],
+["GPS:","24 לוויינים · 6 מישורים (4 בכל מישור) · גובה 20,200 ק\"מ · נטייה 55° · שעון אטומי · 4 נעלמים (x,y,z,t) ← 4 לוויינים."],
+["Savings (VRP):","Sij = Ci0 + C0j − Cij — מחברים מסלולים מהחיסכון הגבוה לנמוך, בכפוף לקיבולת."],
+["רמת מינוע:","כלי רכב מנועיים לכל 1,000 תושבים."],
+["אוילר:","מסלול בכל קשת פעם אחת קיים רק אם יש 0 קודקודים אי-זוגיים (מעגלי) או בדיוק 2."]
+];
+const PAIRS=[
+["וקטור — נקודה/קו/פוליגון, קואורדינטות, בדיד","ראסטר — רשת תאים, רזולוציה = גודל התא"],
+["נתון מרחבי — מיוחס למרחב","נתון גאוגרפי — מיוחס לכדוה\"א (קואורדינטות)"],
+["מודל בדיד — רק מנקודות מוגדרות מראש","מודל רציף — כל נקודה במרחב"],
+["דטרמיניסטי — נתונים ידועים וקבועים","סטוכסטי — אקראי, רק הסתברות/ס\"ת"],
+["סטטי — הכל ידוע מראש","דינמי — מתעדכן בזמן אמת (פיצרייה)"],
+["אוקלידי — קו אווירי (הערכת חסר)","Rectilinear — לאורך צירים (הערכה מחמירה)"],
+["מחסן — אחסון בלבד","Cross-docking — מעבר ללא אחסון"],
+["מרכז הפצה — אחסון + פעולות משלימות","מרלו\"ג — מחוץ לעיר; מרכז מקומי — בעיר"],
+["BLE — צריכת חשמל נמוכה מאוד","GPS — צריכה גבוהה, לא עובד בתוך מבנים"],
+["Overlay — הצלבת שכבות","Proximity — טווח · Network — מסלול ברשת"]
+];
+const UNIT_SUM=[
+[1,"גלובליזציה · יתרון לגודל · התמחות · שרשרת אספקה (שיתוף מידע מפחית אי-ודאות) · 4 מרכיבי תנועה: אמצעי, מדיניות, תשתיות, משתמשים · אינטר-מודליות = COMPOSITION←INTERCHANGE←DECOMPOSITION, מטרה יעילות (לא זול/מהיר) · Last Mile · סיווג דרכים: זרימה↑ ⇔ נגישות↓."],
+[2,"קניגסברג/אוילר · GIS = 5 מרכיבים (כח אדם, נתונים, תוכנה, חומרה, פרוצדורות); תהליך: איסוף←אחסון←תשאול←ניתוח←תצוגה←פלט · שכבות · 3 מרכיבי מידע גאוגרפי: גיאומטריה, מאפיינים, התנהגות · Georeferencing = עיגון תמונה · AGPS = שרת עזר (TTFF) · AVL = GPS+GIS · איכון פנים: WiFi/BLE + חיישנים."],
+[3,"מאזן: חיובי=מקור, שלילי=יעד, 0=מעבר · תובלה (ישיר) ⊂ שיטעון (מעבר) ⊂ מינימום עלות · שיבוץ = תובלה עם 1/1 · Max Flow: פורד-פולקרסון, רשת שיורית + קשתות חוזרות (לביטול הקצאה קודמת), מסלול אוגמנטי, f = צוואר הבקבוק · Max Flow = Min Cut (קשתות רוויות)."],
+[4,"שיקולים: נגישות לשווקים/לרשת התחבורה, כוח אדם, עלויות, תשתיות, תקנות, מיסוי, מזג אוויר · עקומת U (תובלה↑ מול קרקע↓) · P-Median / Max-Min / כיסוי מקסימלי · חציון משוקלל · גבול הפצה = שוויון עלויות · Hub&Spokes · חזית פארטו = פתרונות לא-נשלטים · JIT ← קרבה ללקוח."],
+[5,"מסלול קצר (דייקסטרה 1959, single-source, ללא שליליים) · K-Shortest = גיבוי · חמדני · TSP = מעגל המילטוני מינימלי, NP-Hard ← שכן קרוב (≤2×אופט') / Brute Force · מחלק הדואר = כל הקשתות · VRP = קיבולת + כמה רכבים; Savings · הרחבות: חלונות זמן, דינמי, Dial-A-Ride, E/Green-VRP, רחפנים · דו-סטרי מכפיל רשת."]
+];
+const TACTICS=[
+"קרא את השאלה עד הסוף — מחפשים את ההבדל ה\"מהותי\", לא ניסוח שנשמע נכון בכללי.",
+"פסול מסיחים קיצוניים: \"תמיד\", \"לעולם לא\", \"בכל המקרים\", \"רק\", \"ב-100%\" — לרוב שגויים.",
+"פסול מסיחים שמחליפים בין שיטות (\"תובלה בסולבר ושיטעון היוריסטי\") ואבסורדיים (צינורות גז/נפט, לולאה אינסופית).",
+"זהה קודם את סוג הבעיה (טבלת ההכרעה למעלה) — ואז בחר את התשובה שמתארת אותה נכון.",
+"אין חישובים — אם תשובה דורשת חישוב מספרי, כנראה זו לא הכוונה."
+];
+
+function renderCheat(){
+  main.innerHTML=`<div class="wrap">
+    <div class="page-head">
+      <div>
+        <h1>דף עזר למבחן</h1>
+        <p>מבחן אמריקאי 20–25 שאלות · חומר פתוח <b>מודפס בלבד — אין מחשבים</b> · אין חישובים · 13.8.26</p>
+      </div>
+      <div class="actions"><button class="btn btn-primary" onclick="window.print()">🖨️ הדפס דף עזר</button></div>
+    </div>
+
+    <div class="sheet">
+      <h2 class="warn">⚡ טבלת הכרעה מהירה — "אם השאלה מתארת X ← התשובה Y"</h2>
+      <div class="tb-scroll"><table class="tb"><thead><tr><th style="width:50%">התרחיש בשאלה</th><th>התשובה</th></tr></thead><tbody>
+      ${DECISIONS.map(d=>`<tr><td>${esc(d[0])}</td><td><b>${esc(d[1])}</b></td></tr>`).join("")}
+      </tbody></table></div>
+    </div>
+
+    <div class="sheet">
+      <h2 class="warn">⚠️ מלכודות — הניסוחים שהמרצה שם כמסיחים</h2>
+      ${TRAPS.map(t=>`<p class="ln ${t[2]?'hot':''}"><b>${esc(t[0])}</b> ${esc(t[1])}</p>`).join("")}
+    </div>
+
+    <div class="sheet">
+      <h2 class="ok">📐 נוסחאות ומספרים</h2>
+      ${FORMULAS.map(f=>`<p class="ln cool"><b>${esc(f[0])}</b> ${esc(f[1])}</p>`).join("")}
+    </div>
+
+    <div class="sheet">
+      <h2>🔀 זוגות מושגים — ההבחנה בשורה אחת</h2>
+      <div class="tb-scroll"><table class="tb"><thead><tr><th style="width:50%">מושג א׳</th><th>מושג ב׳</th></tr></thead><tbody>
+      ${PAIRS.map(p=>`<tr><td>${esc(p[0])}</td><td>${esc(p[1])}</td></tr>`).join("")}
+      </tbody></table></div>
+    </div>
+
+    <div class="sheet">
+      <h2>📚 תמצית לפי יחידה</h2>
+      ${UNIT_SUM.map(u=>`<div class="unit-line u${u[0]}"><p class="ln"><b>יחידה ${u[0]} · ${esc(UNITS[u[0]].name)}:</b> ${esc(u[1])}</p></div>`).join("")}
+    </div>
+
+    <div class="sheet">
+      <h2 class="amber">🎯 טקטיקה במבחן</h2>
+      ${TACTICS.map((t,i)=>`<p class="ln"><b>${i+1}.</b> ${esc(t)}</p>`).join("")}
+    </div>
+  </div>`;
+}
+
+/* =============== STUDY GUIDE =============== */
+const GUIDE=[
+ [1,[["חשיבות התחום","הגברת יעילות (יתרון לגודל, התמחות), גלובליזציה, וניהול שרשרת האספקה. שיתוף מידע לאורך השרשרת מפחית אי-ודאות. אתגרים: עומס, מלאים, מרכזי הפצה מול מחסנים."],
+     ["אמצעי תובלה","נוסעים: אוויר / כביש / רכבת / ימי. מטען: מוסיפים צנרת (Pipeline) — ייחודי למטען. הבחירה תלויה בצורך."],
+     ["4 מרכיבי התנועה","אמצעי (רכב) · מדיניות וחוקים · תשתיות (כביש, צינור, נתיב) · משתמשים (נהג, נוסע). כולם משפיעים זה על זה."],
+     ["רמת מינוע","מספר כלי רכב מנועיים ל-1,000 תושבים. מדד להתפתחות כלכלית ולצורך בתשתיות; משמש להשוואה בין מדינות ולחיזוי עומסים."],
+     ["אינטר-מודליות","COMPOSITION (איסוף / First mile) ← INTERCHANGE (מעבר / TRANSFER) ← DECOMPOSITION (חלוקה / Last mile). המטרה: הפצה יעילה יותר — לא בהכרח זולה או מהירה."],
+     ["סיווג דרכים","מהירה / עורקית / מאספת / מקומית. ככל שעולים בהיררכיה: זרימה עולה ונגישות יורדת. קיבולת (יר\"מ/נתיב/שעה): 2,000 / 1,500 / 750 / 250."],
+     ["זרימת תנועה","q = S × D. Sf = מהירות חופשית (צפיפות 0) · Dj = צפיפות פקק (מהירות 0). qmax כאשר D = Dj/2. לכל ערך זרימה (למעט השיא) — שתי צפיפויות ושתי מהירויות."]]],
+ [2,[["גרפים","גשרי קניגסברג (אויילר, 1735) — הבעיה הראשונה בתורת הגרפים. מסלול אוילר (כל קשת פעם אחת) קיים רק אם יש 0 קודקודים בדרגה אי-זוגית (מעגלי) או בדיוק 2."],
+     ["מרחבי מול גאוגרפי","נתון מרחבי מיוחס למרחב; נתון גאוגרפי מיוחס למיקום על כדוה\"א ברשת קואורדינטות. כל גאוגרפי הוא מרחבי — לא להפך."],
+     ["GIS","5 מרכיבים: כח אדם, נתונים, תוכנה, חומרה, פרוצדורות. תהליך: איסוף ← אחסון ← תשאול ← ניתוח ← תצוגה ← פלט. עובד בשכבות (layers)."],
+     ["וקטור מול ראסטר","וקטור: נקודה / קו / פוליגון עם קואורדינטות (בדיד, ניתן לחישוב). ראסטר: רשת תאים — גודל התא קובע את הרזולוציה (תצלומי אוויר, מפות סרוקות)."],
+     ["3 מרכיבי מידע גאוגרפי","גיאומטריה (מיקום וצורה) · מאפיינים (טבלת נתונים) · התנהגות (חוקיות — למשל כבישים שלא אמורים להצטלב)."],
+     ["3 סוגי ניתוח","קרבה (Proximity) · שכבות-על (Overlay) · רשת (Network). בנוסף: תשאול (Query) ועיגון תמונה (Georeferencing)."],
+     ["קנה מידה","מספר קטן במכנה = קנ\"מ גדול = יותר פירוט. ב-1:500 עיר עשויה להופיע כפוליגון; ב-1:250,000 כנקודה."],
+     ["GPS","24 לוויינים, 6 מישורים (4 בכל אחד), גובה 20,200 ק\"מ, נטייה 55°. משרד ההגנה האמריקאי. טריאנגולציה: 4 נעלמים (x,y,z,t) ← 4 לוויינים. שעון אטומי בכל לוויין. מערכות נוספות: Galileo, Glonass, Beidou."],
+     ["AGPS / AVL / איכון פנים","AGPS = שרת עזר שמזרז את הנעילה הראשונה (TTFF). AVL = GPS + GIS (מעקב צי, שילוח דינמי, geofencing). בתוך מבנים אין GPS ← WiFi/BLE + חיישנים; BLE חסכוני, GPS בזבזני."]]],
+ [3,[["מבנה הרשת","קודקוד: מאזן חיובי = מקור/היצע · שלילי = יעד/ביקוש · 0 = קודקוד מעבר. קשת: משקל = עלות / קיבולת. אפשר גם חסם תחתון."],
+     ["בעיית התובלה","ספקים ← לקוחות ישירות (ללא מעבר). מזעור עלות ההובלה. אילוצים: לא מוציאים מספק יותר ממה שיש; כל לקוח מקבל את הביקוש."],
+     ["מאזן — קריטי","מאוזנת: סך היצע = סך ביקוש. היצע > ביקוש ← יעד/לקוח פיקטיבי (עלות 0). ביקוש > היצע ← מקור/ספק פיקטיבי (עלות 0). הבעיה לא הופכת ללא-פתירה."],
+     ["בעיית השיטעון","כמו תובלה, אך הסחורה עוברת דרך קודקודי מעבר (מרלו\"ג/נמל). ההבחנה המהותית מתובלה: קיימות נקודות ביניים שבהן שימור זרימה (נכנס = יוצא). נפתרת בתכנון לינארי / סולבר."],
+     ["בעיית השיבוץ","מקרה פרטי של תובלה: כל היצע = 1 וכל ביקוש = 1 (התאמה 1:1), משתנים בינאריים."],
+     ["זרימה מקסימלית","מקסימום כמות מ-S ל-T בכפוף לקיבולות. פורד-פולקרסון: רשת שיורית + קשתות חוזרות (מאפשרות לבטל הקצאה קודמת ולנתב מחדש), מסלול אוגמנטי, f = צוואר הבקבוק. כמה מקורות/יעדים ← מקור-על ויעד-על בקיבולת ∞."],
+     ["חתך מינימלי","קבוצת קשתות שמחיקתן מנתקת S מ-T, בערך מינימלי. משפט Max-Flow / Min-Cut: הזרימה המקסימלית = החתך המינימלי. הקשתות הרוויות הן החתך."]]],
+ [4,[["סוגי מתקנים","מרכז הפצה (אחסון + פעולות) · מחסן (אחסון בלבד) · Cross-docking (מעבר ללא אחסון) · נמל · מסוף · מרכז לוגיסטי משולב. מרלו\"ג גדול מחוץ לעיר; מרכזים קטנים בעיר לשירות אזורי."],
+     ["שיקולי מיקום","נגישות לשווקים · נגישות לרשת התחבורה · אמצעי הובלה · כוח עבודה · עלויות קבועות ומשתנות · תשתיות · תקנות וחוקים · מיסוי · סיוע ציבורי · מזג אוויר."],
+     ["Trade-off מרכזי","עלות התובלה עולה עם המרחק מהשוק; ערך הקרקע יורד. העלות הכוללת בצורת U — המינימום בנקודת ביניים, לא בקצוות."],
+     ["מודלי מיקום","P-Median: מזעור סכום המרחק המשוקלל בביקוש. Max-Min: מזעור המרחק ללקוח המרוחק ביותר (הוגנות). כיסוי מקסימלי: מקסום הביקוש המכוסה בטווח Dc במספר מתקנים P."],
+     ["מדידת מרחק","אוקלידי = קו אווירי (הערכת חסר) · Rectilinear = לאורך צירים, מנהטן (הערכה מחמירה) · מפורש = ברשת בפועל ב-GIS (מדויק)."],
+     ["מיקום מתקן יחיד","ב-Rectilinear: החציון המשוקלל בכל ציר בנפרד — הנקודה שבה המשקל המצטבר עובר את מחצית סך המשקל. לא ממוצע!"],
+     ["סיווגי בעיות","בדיד (רק מנקודות מוגדרות) מול רציף (כל נקודה) · סטטי מול דינמי · דטרמיניסטי מול סטוכסטי (אקראי — רק הסתברות וסטיית תקן)."],
+     ["נוספים","גבול הפצה = נקודת שוויון עלויות בין שני מקורות. Hub & Spokes = רשת היררכית לקונסולידציה. חזית פארטו = אוסף הפתרונות הלא-נשלטים בבעיה רב-מטרתית."],
+     ["JIT","מלאי מינימלי + משלוחים תכופים ← מחייב מיקום מחסנים קרוב ללקוח (אספקה מהירה ואמינה). מרחק גדול הורס JIT."]]],
+ [5,[["מושגי יסוד","גרף G=(V,E,w). מסלול המילטוני = כל הקודקודים פעם אחת; מעגל המילטוני = גם חוזר להתחלה."],
+     ["מסלול קצר ביותר","הדרך הזולה בין מוצא ליעד (Waze). K-Shortest Paths = K מסלולים חלופיים מוכנים מראש, למקרה שהמסלול הראשי חסום."],
+     ["דייקסטרה","1959, הולנדי, אלגוריתם חמדני. מוצא בבת אחת מסלולים מקודקוד מוצא אחד לכל שאר הקודקודים (single-source). מבטיח אופטימום רק ללא משקלים שליליים — קודקוד ש\"ננעל\" לא מתעדכן שוב."],
+     ["אלגוריתם חמדני","בכל צעד בוחר את הטוב ביותר מקומית, בלי לשקול את העתיד. בדייקסטרה ← אופטימלי. ב-TSP ← רק קירוב."],
+     ["סוכן נוסע (TSP)","מעגל המילטוני מינימלי — כל הקודקודים פעם אחת וחזרה. NP-Hard (גידול עצרתי) ← היוריסטיקות. שכן קרוב: S_opt ≤ S_alg ≤ 2·S_opt; שינוי נקודת התחלה משנה את המסלול. Brute Force = כל האפשרויות (אופטימלי אך בלתי מעשי)."],
+     ["מחלק הדואר הסיני","מעגל מינימלי שעובר בכל הקשתות (לא קודקודים!). איסוף אשפה, טאטוא, חלוקת דואר."],
+     ["ניתוב רכבים (VRP)","שיבוץ מספר רכבים ללקוחות תחת אילוצים. המעבר מ-TSP ל-VRP: מתווסף אילוץ קיבולת הרכב ← כמה רכבים וכמה מסלולים. Savings (Clarke & Wright): Sij = Ci0 + C0j − Cij."],
+     ["מאפייני VRP והרחבות","גודל/סוג צי · מחסן אחד מול כמה · ביקוש דטרמיניסטי/סטוכסטי · כביש דו-סטרי מכפיל את הרשת ומקשה · חלונות זמן · בעיה דינמית · Dial-A-Ride · Green/E-VRP (תחנות טעינה) · רחפנים ורכבים אוטונומיים."]]]
+];
+
+function renderGuide(){
+  main.innerHTML=`<div class="wrap">
+    <div class="page-head">
+      <div><h1>מדריך מיקוד</h1><p>כל החומר לפי 5 יחידות ההוראה · מבוסס על המצגות והקלטות הזום</p></div>
+      <div class="actions"><button class="btn btn-primary" onclick="window.print()">🖨️ הדפס מיקוד</button></div>
+    </div>
+    ${GUIDE.map(([u,items])=>`<div class="sheet">
+      <h2 style="color:${UNITS[u].hex};border-color:${UNITS[u].hex}">יחידה ${u} — ${esc(UNITS[u].name)}</h2>
+      ${items.map(it=>`<p class="ln"><b>${esc(it[0])}:</b> ${esc(it[1])}</p>`).join("")}
+    </div>`).join("")}
+    <div class="sheet">
+      <h2 class="warn">⭐ 8 שאלות המרצה — מפת תשובות מהירה</h2>
+      ${[["1) תובלה לא מאוזנת:","היצע > ביקוש ← יעד/לקוח פיקטיבי (עלות 0). [ביקוש > היצע ← מקור/ספק פיקטיבי]"],
+         ["2) תובלה מול שיטעון:","ההבדל המהותי — בשיטעון קודקודי מעבר שבהם הזרימה הנכנסת = היוצאת"],
+         ["3) JIT ומיקום:","מחייב מחסנים קרובים גיאוגרפית ללקוחות — אספקה מיידית, תכופה ואמינה"],
+         ["4) דייקסטרה ומשקל שלילי:","נכשל כי חמדני — קודקוד שננעל כקבוע לא מתעדכן גם אם קשת שלילית מציעה מסלול קצר יותר"],
+         ["5) K מסלולים קצרים:","חלופות גיבוי מוגדרות מראש לתאונות/חסימות"],
+         ["6) סוכן נוסע מול מסלול קצר:","TSP = כל הקודקודים וחזרה למוצא; מסלול קצר = בין שני קודקודים בלבד"],
+         ["7) מעבר מ-TSP ל-VRP:","מתווסף אילוץ קיבולת הרכב ← כמה רכבים בכמה מסלולים"],
+         ["8) VRP ל-150 לקוחות:","היוריסטיקה — VRP היא NP-קשה; פתרון מדויק דורש זמן עצום"]
+        ].map(x=>`<p class="ln hot"><b>${esc(x[0])}</b> ${esc(x[1])}</p>`).join("")}
+    </div>
+  </div>`;
+}
+
+/* =============== QUESTION BANK =============== */
+let bankAnswers=true;
+function renderBank(){
+  const byUnit={};
+  QUESTIONS.forEach((q,i)=>{(byUnit[q.u]=byUnit[q.u]||[]).push({...q,i});});
+  let n=0;
+  const sections=Object.keys(byUnit).sort().map(u=>{
+    const list=byUnit[u].sort((a,b)=>(a.prof?0:1)-(b.prof?0:1));
+    return `<div class="sheet">
+      <h2 style="color:${UNITS[u].hex};border-color:${UNITS[u].hex}">יחידה ${u} — ${esc(UNITS[u].name)} <span style="font-weight:600;font-size:12px;color:#5b6675">(${list.length} שאלות)</span></h2>
+      ${list.map(q=>{n++;return `<div class="bank-q">
+        <div><span class="bank-n">שאלה ${n}</span>${q.prof?'<span class="bank-star">⭐ שאלת מרצה</span>':''}</div>
+        ${q.s?`<div class="bank-s">${esc(q.s)}</div>`:''}
+        <div class="bank-qt">${esc(q.q)}</div>
+        ${q.o.map((o,j)=>`<div class="bank-o ${j===q.a?'is-ans':''}">${LETTERS[j]}. ${esc(o)}${j===q.a?' ✔':''}</div>`).join("")}
+        <div class="bank-e"><b>הסבר:</b> ${esc(q.e)}</div>
+      </div>`;}).join("")}
+    </div>`;
   }).join("");
-  const total = state.profOnly ? PROF_COUNT : QUESTIONS.filter(q=>state.selectedUnits.has(q.u)).length;
-  app.innerHTML = `<div class="wrap">
+  main.innerHTML=`<div class="wrap">
+    <div class="page-head">
+      <div><h1>כל השאלות</h1><p>${QUESTIONS.length} שאלות · מתוכן ${PROF_COUNT} שאלות מרצה (⭐) · תשובות מסומנות ✔ עם הסבר</p></div>
+      <div class="actions" style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-ghost" id="toggleAns">${bankAnswers?"הסתר תשובות":"הצג תשובות"}</button>
+        <button class="btn btn-primary" onclick="window.print()">🖨️ הדפס שאלות</button>
+      </div>
+    </div>
+    <div id="bankBody" class="${bankAnswers?'':'hide-ans'}">${sections}</div>
+  </div>`;
+  document.getElementById("toggleAns").addEventListener("click",()=>{bankAnswers=!bankAnswers;renderBank();});
+}
+
+/* =============== QUIZ =============== */
+function renderStart(){
+  const counts={}; QUESTIONS.forEach(q=>counts[q.u]=(counts[q.u]||0)+1);
+  const chips=Object.entries(UNITS).map(([u,info])=>{
+    const on=state.selectedUnits.has(+u);
+    return `<button class="chip" aria-pressed="${on}" data-unit="${u}"><span class="dot" style="background:${info.hex}"></span>${info.name} <span style="color:var(--muted);font-weight:600">(${counts[u]||0})</span></button>`;
+  }).join("");
+  const total=state.profOnly?PROF_COUNT:QUESTIONS.filter(q=>state.selectedUnits.has(q.u)).length;
+  main.innerHTML=`<div class="wrap">
     <div class="hero">
       <div class="hero-top">
         <div class="kicker">בר-אילן · ד״ר אורן נחום</div>
         <h1>תרגול למבחן — תובלה ושינוע</h1>
-        <p class="hero-sub">שאלות יישום בסגנון המבחן · משוב מיידי והסבר לכל שאלה</p>
+        <p class="hero-sub">${QUESTIONS.length} שאלות יישום · משוב מיידי והסבר לכל שאלה</p>
       </div>
       <div class="hero-body">
         <label class="toggle-row" for="prof" style="border-color:#f0cf9a;background:#fff9f0">
-          <span class="t-txt"><b>⭐ רק שאלות המרצה (${PROF_COUNT})</b>השאלות המדויקות שהמרצה הראה בכיתה</span>
+          <span class="t-txt"><b>⭐ רק שאלות המרצה (${PROF_COUNT})</b>השאלות המדויקות שהוצגו בכיתה</span>
           <span class="switch"><input type="checkbox" id="prof" ${state.profOnly?"checked":""}><span class="slider"></span></span>
         </label>
-        <div id="unitBlock" style="${state.profOnly?'opacity:.4;pointer-events:none':''}">
+        <div style="${state.profOnly?'opacity:.4;pointer-events:none':''}">
           <p class="field-label">בחר יחידות לתרגול</p>
           <div class="chips" id="chips">${chips}</div>
         </div>
         <label class="toggle-row" for="shf">
-          <span class="t-txt"><b>ערבוב שאלות</b>סדר אקראי בכל סבב תרגול</span>
+          <span class="t-txt"><b>ערבוב שאלות ותשובות</b>סדר אקראי בכל סבב</span>
           <span class="switch"><input type="checkbox" id="shf" ${state.shuffle?"checked":""}><span class="slider"></span></span>
         </label>
         <div class="start-meta">
-          <span class="count" id="cnt">${total} שאלות נבחרו</span>
+          <span class="count">${total} שאלות נבחרו</span>
           <button class="btn btn-primary" id="startBtn" ${total?"":"disabled"}>התחל תרגול ←</button>
         </div>
       </div>
     </div>
-    <p class="foot">${QUESTIONS.length} שאלות · מתוכן ${PROF_COUNT} שאלות מרצה ⭐ · מבוסס על המצגות והקלטות הזום</p>
+    <p class="foot">מבחן: 13.8.26 · אמריקאי · חומר פתוח <b>מודפס בלבד</b> (אין מחשבים) · ללא חישובים</p>
   </div>`;
-
-  document.getElementById("prof").addEventListener("change", e=>{ state.profOnly = e.target.checked; renderStart(); });
-
-  document.getElementById("chips").addEventListener("click", e=>{
-    const b = e.target.closest(".chip"); if(!b) return;
-    const u = +b.dataset.unit;
-    if(state.selectedUnits.has(u)) state.selectedUnits.delete(u); else state.selectedUnits.add(u);
+  document.getElementById("chips").addEventListener("click",e=>{
+    const b=e.target.closest(".chip"); if(!b)return;
+    const u=+b.dataset.unit;
+    state.selectedUnits.has(u)?state.selectedUnits.delete(u):state.selectedUnits.add(u);
     renderStart();
   });
-  document.getElementById("shf").addEventListener("change", e=>{ state.shuffle = e.target.checked; });
-  document.getElementById("startBtn").addEventListener("click", startQuiz);
-}
-
-function shuffleOptions(q){
-  // randomize option order each session and remap the correct index — removes positional bias
-  const order = shuffle(q.o.map((_,i)=>i));
-  return {...q, o: order.map(i=>q.o[i]), a: order.indexOf(q.a)};
+  document.getElementById("prof").addEventListener("change",e=>{state.profOnly=e.target.checked;renderStart();});
+  document.getElementById("shf").addEventListener("change",e=>{state.shuffle=e.target.checked;});
+  document.getElementById("startBtn").addEventListener("click",startQuiz);
 }
 function startQuiz(){
-  let pool = state.profOnly ? QUESTIONS.filter(q=>q.prof) : QUESTIONS.filter(q=>state.selectedUnits.has(q.u));
-  if(!pool.length) return;
-  if(state.shuffle) pool = shuffle(pool);
-  pool = pool.map(shuffleOptions);
-  state.pool = pool; state.idx=0; state.score=0; state.answered=false; state.chosen=null; state.log=[];
+  let pool=state.profOnly?QUESTIONS.filter(q=>q.prof):QUESTIONS.filter(q=>state.selectedUnits.has(q.u));
+  if(!pool.length)return;
+  if(state.shuffle)pool=shuffle(pool);
+  pool=pool.map(shuffleOptions);
+  state.pool=pool;state.idx=0;state.score=0;state.answered=false;state.log=[];
   renderQuestion();
 }
-
 function renderQuestion(){
-  const q = state.pool[state.idx];
-  const info = UNITS[q.u];
-  const pct = Math.round((state.idx)/state.pool.length*100);
-  const opts = q.o.map((o,i)=>`<button class="opt" data-i="${i}"><span class="lt">${LETTERS[i]}</span><span class="ot">${o}</span></button>`).join("");
-  app.innerHTML = `<div class="wrap">
+  const q=state.pool[state.idx], info=UNITS[q.u];
+  const pct=Math.round(state.idx/state.pool.length*100);
+  main.innerHTML=`<div class="wrap">
     <div class="qhead"><div class="qhead-in">
       <span class="counter">שאלה ${state.idx+1}/${state.pool.length}</span>
       <div class="progress"><i style="width:${pct}%"></i></div>
       <span class="score-chip">✓ ${state.score}</span>
     </div></div>
     <div class="card">
-      <span class="badge" style="background:${info.hex}">יחידה ${q.u} · ${info.name}</span>${q.prof?'<span class="badge badge-prof">⭐ שאלת מרצה</span>':''}
-      <div class="scenario">${q.s}</div>
-      <p class="qtext">${q.q}</p>
-      <div class="opts" id="opts">${opts}</div>
+      <span class="badge" style="background:${info.hex}">יחידה ${q.u} · ${esc(info.name)}</span>${q.prof?'<span class="badge badge-prof">⭐ שאלת מרצה</span>':''}
+      <div class="scenario">${esc(q.s)}</div>
+      <p class="qtext">${esc(q.q)}</p>
+      <div class="opts" id="opts">${q.o.map((o,i)=>`<button class="opt" data-i="${i}"><span class="lt">${LETTERS[i]}</span><span class="ot">${esc(o)}</span></button>`).join("")}</div>
       <div id="fb"></div>
       <div class="nav" id="nav"><span class="hint">בחר/י תשובה</span></div>
     </div>
   </div>`;
-  document.getElementById("opts").addEventListener("click", onAnswer);
+  document.getElementById("opts").addEventListener("click",onAnswer);
 }
-
 function onAnswer(e){
-  if(state.answered) return;
-  const btn = e.target.closest(".opt"); if(!btn) return;
-  const chosen = +btn.dataset.i;
-  const q = state.pool[state.idx];
-  state.answered = true; state.chosen = chosen;
-  const correct = chosen === q.a;
-  if(correct) state.score++;
-  state.log.push({u:q.u, correct});
-
+  if(state.answered)return;
+  const btn=e.target.closest(".opt"); if(!btn)return;
+  const chosen=+btn.dataset.i, q=state.pool[state.idx];
+  state.answered=true;
+  const ok=chosen===q.a; if(ok)state.score++;
+  state.log.push({u:q.u,correct:ok});
   document.querySelectorAll(".opt").forEach(o=>{
-    const i = +o.dataset.i; o.disabled = true;
-    if(i === q.a){ o.classList.add("correct"); o.insertAdjacentHTML("beforeend",'<span class="mark">✓</span>'); }
-    else if(i === chosen){ o.classList.add("wrong"); o.insertAdjacentHTML("beforeend",'<span class="mark">✗</span>'); }
+    const i=+o.dataset.i; o.disabled=true;
+    if(i===q.a){o.classList.add("correct");o.insertAdjacentHTML("beforeend",'<span class="mark">✓</span>');}
+    else if(i===chosen){o.classList.add("wrong");o.insertAdjacentHTML("beforeend",'<span class="mark">✗</span>');}
   });
-  document.getElementById("fb").innerHTML =
-    `<div class="explain ${correct?"ok":"no"}"><b>${correct?"נכון!":"לא נכון — התשובה הנכונה: "+LETTERS[q.a]}</b>${q.e}</div>`;
-  const last = state.idx === state.pool.length-1;
-  document.getElementById("nav").innerHTML =
-    `<span class="hint">${state.score} מתוך ${state.idx+1} עד כה</span>
-     <button class="btn btn-primary" id="nextBtn">${last?"סיום וסיכום ←":"הבא ←"}</button>`;
-  document.getElementById("nextBtn").addEventListener("click", ()=>{
-    if(last){ renderResults(); } else { state.idx++; state.answered=false; state.chosen=null; renderQuestion(); window.scrollTo({top:0,behavior:"smooth"}); }
+  document.getElementById("fb").innerHTML=`<div class="explain ${ok?'ok':'no'}"><b>${ok?"נכון!":"לא נכון — התשובה הנכונה: "+LETTERS[q.a]}</b>${esc(q.e)}</div>`;
+  const last=state.idx===state.pool.length-1;
+  document.getElementById("nav").innerHTML=`<span class="hint">${state.score} מתוך ${state.idx+1} עד כה</span><button class="btn btn-primary" id="nextBtn">${last?"סיום וסיכום ←":"הבא ←"}</button>`;
+  const nb=document.getElementById("nextBtn");
+  nb.addEventListener("click",()=>{
+    if(last)renderResults();
+    else{state.idx++;state.answered=false;renderQuestion();window.scrollTo({top:0,behavior:"smooth"});}
   });
-  document.getElementById("nextBtn").focus();
+  nb.focus();
 }
-
 function renderResults(){
-  const total = state.pool.length, pct = Math.round(state.score/total*100);
-  let msg = pct>=85?"מצוין! אתה מוכן למבחן 💪":pct>=65?"יפה מאוד — עוד חזרה קטנה ואתה שם":"כדאי לחזור על החומר ולנסות שוב";
-  const byU = {}; state.log.forEach(l=>{ (byU[l.u]=byU[l.u]||{c:0,t:0}); byU[l.u].t++; if(l.correct)byU[l.u].c++; });
-  const rows = Object.keys(byU).sort().map(u=>{
-    const d=byU[u], p=Math.round(d.c/d.t*100), info=UNITS[u];
-    return `<div class="bd-row">
-      <div class="bd-name"><span class="dot" style="background:${info.hex}"></span>יחידה ${u} · ${info.name}</div>
-      <div class="bd-val">${d.c}/${d.t}</div>
-      <div class="bd-bar"><i style="width:${p}%;background:${info.hex}"></i></div>
-    </div>`;
+  const total=state.pool.length, pct=Math.round(state.score/total*100);
+  const msg=pct>=85?"מצוין! אתה מוכן למבחן 💪":pct>=65?"יפה מאוד — עוד חזרה קטנה ואתה שם":"כדאי לחזור על החומר ולנסות שוב";
+  const byU={}; state.log.forEach(l=>{(byU[l.u]=byU[l.u]||{c:0,t:0});byU[l.u].t++;if(l.correct)byU[l.u].c++;});
+  const rows=Object.keys(byU).sort().map(u=>{
+    const d=byU[u],p=Math.round(d.c/d.t*100),info=UNITS[u];
+    return `<div class="bd-row"><div class="bd-name"><span class="dot" style="background:${info.hex}"></span>יחידה ${u} · ${esc(info.name)}</div><div class="bd-val">${d.c}/${d.t}</div><div class="bd-bar"><i style="width:${p}%;background:${info.hex}"></i></div></div>`;
   }).join("");
-  app.innerHTML = `<div class="wrap">
+  main.innerHTML=`<div class="wrap">
     <div class="result">
-      <div class="result-top">
-        <div class="ring" style="--v:${pct}"><i>${pct}%</i></div>
-        <h2>${state.score} מתוך ${total}</h2>
-        <p>${msg}</p>
-      </div>
-      <div class="breakdown">
-        <p class="field-label" style="text-align:right">פירוט לפי יחידה</p>
-        ${rows}
-      </div>
+      <div class="result-top"><div class="ring" style="--v:${pct}"><i>${pct}%</i></div><h2>${state.score} מתוך ${total}</h2><p>${msg}</p></div>
+      <div class="breakdown"><p class="field-label" style="text-align:right">פירוט לפי יחידה</p>${rows}</div>
       <div class="result-actions">
         <button class="btn btn-primary" id="again">תרגול חדש ←</button>
-        <button class="btn btn-ghost" id="home">חזרה למסך הפתיחה</button>
+        <button class="btn btn-ghost" id="home">מסך הפתיחה</button>
       </div>
     </div>
     <p class="foot">בהצלחה במבחן! 📚</p>
   </div>`;
-  document.getElementById("again").addEventListener("click", startQuiz);
-  document.getElementById("home").addEventListener("click", renderStart);
+  document.getElementById("again").addEventListener("click",startQuiz);
+  document.getElementById("home").addEventListener("click",renderStart);
   window.scrollTo({top:0,behavior:"smooth"});
 }
 
-renderStart();
+/* =============== ROUTER =============== */
+function show(v){
+  view=v;
+  document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("is-on",t.dataset.view===v));
+  if(v==="quiz")renderStart();
+  else if(v==="cheat")renderCheat();
+  else if(v==="guide")renderGuide();
+  else renderBank();
+  window.scrollTo({top:0});
+}
+document.getElementById("tabs").addEventListener("click",e=>{
+  const b=e.target.closest(".tab"); if(b)show(b.dataset.view);
+});
+show("quiz");
 </script>
 
 </body>
