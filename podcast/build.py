@@ -76,7 +76,8 @@ def parse(path):
             if m:
                 pending_gap = max(pending_gap, float(m.group(1)))
                 continue
-            m = re.match(r"^([אש])\s*:\s*(.+)$", line)
+            # התסריטים מנוקדים (ראו nikud.py), אז גם אות הדובר עשויה לשאת ניקוד
+            m = re.match(r"^([אש])[֑-ׇ]*\s*:\s*(.+)$", line)
             if not m:
                 sys.exit(f"שורה לא מזוהה ב-{os.path.basename(path)}:\n  {line}")
             if parts:
@@ -174,7 +175,11 @@ def duration(path):
     return 0.0
 
 
+# כיוון הכתיבה מוצהר ב-dir על שורש המסמך ולא רק ב-CSS: זה מה שקובע את
+# כיוון הבסיס לאלגוריתם הדו-כיווני, הוא שורד גם אם הגיליון לא נטען, והוא
+# מה שנגני מסך וכפתורי הנגן מסתמכים עליו.
 INDEX_HEAD = """<!DOCTYPE html>
+<html lang="he" dir="rtl">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>פודקאסט — ניהול מערכות תובלה ושינוע</title>
@@ -215,21 +220,31 @@ audio{width:100%;height:36px}
 """
 
 
+def hebrew_duration(seconds):
+    """„שעה ו-25 דקות״ ולא „1 שעות ו-25 דקות״."""
+    h, m = int(seconds // 3600), int(seconds % 3600 // 60)
+    words = {1: "שעה", 2: "שעתיים"}
+    head = words.get(h) if h in words else (f"{h} שעות" if h else "")
+    tail = "דקה אחת" if m == 1 else (f"{m} דקות" if m else "")
+    return " ו-".join(p for p in (head, tail) if p) or "0 דקות"
+
+
 def write_index(rows):
     total = sum(d for _, d, _ in rows)
     parts = [INDEX_HEAD,
-             f'<p class="tot">{len(rows)} פרקים · '
-             f'{int(total // 3600)} שעות ו-{int(total % 3600 // 60)} דקות</p>\n']
+             f'<p class="tot">{len(rows)} פרקים · {hebrew_duration(total)}</p>\n']
     for name, d, _ in rows:
         num, title = name[:-4].split(" - ", 1)
         href = "mp3/" + name.replace("#", "%23").replace("?", "%3F")
+        # bdi סוגר את רצפי הספרות בתוך פסקה ימין-לשמאל, כך שמספר הפרק ואורכו
+        # לא נגררים למקום אחר לפי מה שמקיף אותם
         parts.append(
             f'<div class="ep"><div class="hd">'
-            f'<span class="num">{num}</span>'
+            f'<bdi class="num">{num}</bdi>'
             f'<span class="ttl">{title}</span>'
-            f'<span class="dur">{int(d // 60)}:{int(d % 60):02d}</span></div>'
+            f'<bdi class="dur">{int(d // 60)}:{int(d % 60):02d}</bdi></div>'
             f'<audio controls preload="none" src="{href}"></audio></div>\n')
-    parts.append('<p class="note">הקבצים עצמם נמצאים בתיקיית <code>mp3</code> — '
+    parts.append('<p class="note">הקבצים עצמם נמצאים בתיקיית <bdi><code>mp3</code></bdi> — '
                  'אפשר להעתיק אותם לטלפון ולהאזין בלי אינטרנט. '
                  'הם מתויגים כאלבום אחד לפי מספר פרק, כך שכל נגן ישמור על הסדר.</p>\n')
     parts.append("</div>\n")
@@ -269,8 +284,7 @@ def main():
     for name, d, size in rows:
         print(f"{int(d // 60):>3}:{int(d % 60):02d}  {size:>5.1f} MB  {name}")
     print("─" * 58)
-    print(f"סה״כ {len(rows)} פרקים · {int(total // 3600)} שעות "
-          f"{int(total % 3600 // 60)} דקות · "
+    print(f"סה״כ {len(rows)} פרקים · {hebrew_duration(total)} · "
           f"{sum(r[2] for r in rows):.0f} MB")
 
 
