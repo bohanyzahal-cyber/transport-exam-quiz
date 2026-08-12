@@ -57,6 +57,13 @@ em{font-style:normal;background:#fff2b8;padding:0 1px;border-radius:2px}
       margin:1.2mm 0;break-inside:avoid;border-radius:0 2.5px 2.5px 0}
 .warn b{color:#a51b1b}
 
+/* תרשימים — לא נחתכים בין טורים, ונדפסים בשחור */
+.fig{margin:1.2mm 0 2mm;break-inside:avoid;page-break-inside:avoid;
+     text-align:center;color:#1a1a1a;direction:ltr}
+.fig svg{width:100%;max-width:60mm;height:auto}
+.fig figcaption{direction:rtl;font-size:9.4px;color:#42506a;
+     margin-top:.5mm;line-height:1.35;text-align:right}
+
 /* טבלאות */
 table{border-collapse:collapse;width:100%;font-size:11.2px;margin:0 0 2mm;break-inside:avoid}
 th{background:var(--c,#333);color:#fff;text-align:right;padding:1mm 2mm;font-size:10px}
@@ -338,6 +345,19 @@ var DATA = {sections:[
 "מהירות מול זמן נסיעה :: __לא אותו משתנה__ — זמן הנסיעה כולל גם עצירות והמתנות, ולכן מודלים מפרידים ביניהם"
 ]},
 {warn:"דוגמה: ⟨40⟩ קמ״ש × ⟨50⟩ רכב/ק״מ = **⟨2,000⟩ רכב/שעה**."},
+{svg:`<svg viewBox="0 0 250 150" xmlns="http://www.w3.org/2000/svg">
+<g fill="none" stroke="currentColor" stroke-width="1.6">
+<path d="M32 125 H232"/><path d="M32 125 V16"/>
+<path d="M32 125 Q130 -12 222 125"/></g>
+<g fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="3 2.5">
+<path d="M127 125 V44"/><path d="M32 84 H198"/></g>
+<g fill="currentColor"><circle cx="66" cy="84" r="2.6"/><circle cx="192" cy="84" r="2.6"/></g>
+<g fill="currentColor" font-size="9.5" font-family="sans-serif">
+<text x="16" y="22">q</text><text x="236" y="130">D</text>
+<text x="108" y="138">D_j/2</text><text x="211" y="138">D_j</text>
+<text x="132" y="40">q_max</text>
+<text x="44" y="78">A</text><text x="196" y="78">B</text></g></svg>`,
+ cap:"קו אופקי חותך את הפרבולה ב**שתי** נקודות: **A** — צפיפות נמוכה ומהירות גבוהה · **B** — צפיפות גבוהה ומהירות נמוכה. אותה זרימה, שני מצבים הפוכים. רק ב-**D_j/2** הפתרון יחיד."},
 
 {h2:"יחידת רכב משווה (יר״מ)"},
 {tbl:{head:["רכב","מישור","הר","צומת"],rows:[
@@ -367,6 +387,17 @@ var DATA = {sections:[
 "בקניגסברג :: היו קודקודים בדרגה ⟨3⟩,⟨3⟩,⟨5⟩ ← **אי אפשר**",
 "ציור הבית :: ⟨2⟩ פינות תחתונות בדרגה ⟨3⟩, השאר זוגיות ← **אפשר**, אך חייבים להתחיל באחת התחתונות ולסיים בשנייה"
 ]},
+{svg:`<svg viewBox="0 0 210 168" xmlns="http://www.w3.org/2000/svg">
+<g fill="none" stroke="currentColor" stroke-width="1.7">
+<path d="M45 62 H165 V142 H45 Z"/><path d="M45 62 L105 22 L165 62"/>
+<path d="M45 62 L165 142"/><path d="M165 62 L45 142"/></g>
+<g fill="currentColor" font-size="10" font-family="sans-serif">
+<circle cx="45" cy="62" r="3.4"/><text x="30" y="60">C·4</text>
+<circle cx="165" cy="62" r="3.4"/><text x="172" y="60">D·4</text>
+<circle cx="45" cy="142" r="4.4"/><text x="24" y="158">A·3</text>
+<circle cx="165" cy="142" r="4.4"/><text x="172" y="158">B·3</text>
+<circle cx="105" cy="22" r="3.4"/><text x="97" y="16">E·2</text></g></svg>`,
+ cap:"המספר ליד כל קודקוד הוא **הדרגה**. רק **A ו-B** אי-זוגיים ← מסלול אוילר קיים אך **אינו מעגלי**: מתחילים באחד מהם ומסיימים בשני."},
 
 {h2:"מרחבי מול גאוגרפי"},
 {items:[
@@ -606,6 +637,21 @@ var DATA = {sections:[
 
 {h2:"מיקום ועלויות"},
 {warn:"**עקומת U:** עלות התובלה **עולה** עם המרחק מהשוק · ערך הקרקע **יורד**.\nהעלות הכוללת מינימלית ב**נקודת ביניים** — __לא__ הכי קרוב ו__לא__ הכי רחוק.\nבמבחן יציעו «הכי קרוב לשוק כי ההובלה זולה» או «הכי רחוק כי הקרקע זולה» — **שתיהן שגויות**."},
+{svg:`<svg viewBox="0 0 250 150" xmlns="http://www.w3.org/2000/svg">
+<g fill="none" stroke="currentColor" stroke-width="1.6">
+<path d="M34 128 H236"/><path d="M34 128 V10"/></g>
+<path d="M34 126 L224 50" fill="none" stroke="currentColor" stroke-width="1.2"/>
+<path d="M34 20 Q129 110 224 118" fill="none" stroke="currentColor"
+ stroke-width="1.2" stroke-dasharray="4 3"/>
+<path d="M34 20 Q129 71 224 42" fill="none" stroke="currentColor" stroke-width="2.4"/>
+<path d="M155 128 V53" fill="none" stroke="currentColor" stroke-width=".9" stroke-dasharray="3 2.5"/>
+<circle cx="155" cy="53" r="3.2" fill="currentColor"/>
+<g fill="currentColor" font-size="9" font-family="sans-serif">
+<text x="100" y="18">Total</text><text x="184" y="76">Truck</text>
+<text x="180" y="102">Land</text>
+<text x="42" y="14">Cost</text><text x="182" y="142">Distance</text>
+<text x="140" y="142">min</text></g></svg>`,
+ cap:"**Truck** עולה עם המרחק · **Land** יורדת · **Total** הוא סכומן ולכן **תמיד מעל שתיהן**, ומקבל צורת U. המינימום ב**נקודת ביניים** — לא הכי קרוב ולא הכי רחוק."},
 
 {h2:"⚠ שאלת המרצה — JIT ומיקום"},
 {items:[
@@ -682,6 +728,23 @@ var DATA = {sections:[
 "__שימו לב לניסוח__ :: __לא__ צריך שיהיה טוב יותר ב**שתי** המטרות. במצגת הנקודה ההיפותטית **G** נשלטת ע״י **E**, שנמצאת באותו מרחק ממוצע בערך אך עם **אחוז לא-מכוסה נמוך בהרבה** — עדיפה באחת, לא גרועה בשנייה",
 "מי בוחר :: **כל הפתרונות שעל החזית טובים באותה מידה**. המודל לא מכריע — **הארגון בוחר לפי ההעדפות שלו**"
 ]},
+{svg:`<svg viewBox="0 0 250 150" xmlns="http://www.w3.org/2000/svg">
+<g fill="none" stroke="currentColor" stroke-width="1.6">
+<path d="M36 126 H236"/><path d="M36 126 V14"/></g>
+<polyline points="58,28 76,44 92,54 108,60 168,92 208,104" fill="none"
+ stroke="currentColor" stroke-width="1.4"/>
+<g fill="currentColor">
+<circle cx="58" cy="28" r="3"/><circle cx="76" cy="44" r="3"/>
+<circle cx="92" cy="54" r="3"/><circle cx="108" cy="60" r="3"/>
+<circle cx="168" cy="92" r="3"/><circle cx="208" cy="104" r="3"/></g>
+<rect x="164" y="56" width="6.5" height="6.5" fill="currentColor"/>
+<g fill="currentColor" font-size="9" font-family="sans-serif">
+<text x="50" y="24">A</text><text x="82" y="40">B</text><text x="96" y="50">C</text>
+<text x="112" y="56">D</text><text x="172" y="90">E</text><text x="212" y="102">F</text>
+<text x="174" y="54">G</text>
+<text x="44" y="12">Uncovered %</text>
+<text x="150" y="142">Average Distance</text></g></svg>`,
+ cap:"‏**A–F** על החזית — אי אפשר לשפר מטרה בלי לפגוע באחרת. **G** מחוץ לה: **E** נמצאת באותו מרחק ממוצע בערך אך עם אחוז לא-מכוסה נמוך בהרבה, ולכן **E שולטת ב-G** — טובה באחת, לא גרועה בשנייה."},
 
 {h3:"⬜ ירד מהמיקוד"},
 {items:[
@@ -887,6 +950,9 @@ function block(b){
   if(b.h2) return E('h2',{},rt(b.h2));
   if(b.h3) return E('h3',{},rt(b.h3));
   if(b.warn) return E('div',{'class':'warn'},rt(b.warn));
+  /* תרשים: ה-SVG יורש currentColor ולכן נדפס בשחור נקי */
+  if(b.svg) return E('figure',{'class':'fig'},
+    b.svg + (b.cap?'<figcaption>'+rt(b.cap)+'</figcaption>':''));
   if(b.tbl){
     var t=E('table'),th=E('tr');
     (b.tbl.head||[]).forEach(function(c){th.appendChild(E('th',{},rt(c)));});
