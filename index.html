@@ -160,6 +160,12 @@
   .bank-cut{color:#5b6675; font-size:11.5px; font-weight:700; margin-inline-start:6px}
   .scenario{background:#f4f7fa; border:1px solid #e5ebf1; border-right:3px solid var(--primary); border-radius:8px; padding:12px 14px; font-size:14.5px; color:#374559; margin-bottom:13px}
   .qtext{font-size:18px; font-weight:700; line-height:1.5; margin:0 0 15px; text-wrap:balance}
+/* תרשים השאלה — ה-SVG יורש currentColor, ולכן נראה נכון גם על רקע כהה */
+.diagram{display:flex; justify-content:center; margin:0 0 14px; padding:10px;
+  background:#f4f7fa; border:1px solid #e5ebf1; border-radius:8px; color:#31465e; direction:ltr}
+.diagram svg{width:100%; max-width:320px; height:auto}
+@media(prefers-color-scheme:dark){
+  .diagram{background:#1b222b; border-color:#2b3542; color:#dbe6f2}}
   .opts{display:flex; flex-direction:column; gap:10px}
   .opt{display:flex; align-items:flex-start; gap:11px; text-align:right; width:100%; background:#fff; border:1.5px solid var(--line); border-radius:11px; padding:13px 14px; font:inherit; font-size:15px; cursor:pointer; transition:.14s; color:var(--ink)}
   .opt:hover:not(:disabled){border-color:var(--primary-2); background:#f7fafd}
@@ -599,6 +605,16 @@ const QUESTIONS = [
 {u:5,qb:true,s:"TSP, מחלק הדואר הסיני ו-VRP.",q:"מהי גישת ה\"כוח הגס\" (Brute Force) לפתרון בעיית הסוכן הנוסע, ומדוע היא אינה מעשית עבור מספר קודקודים גדול?",o:["הפקת כל המסלולים האפשריים, חישוב האורך של כל אחד מהם ובחירת הקצר ביותר; בשל הגידול הפקטוריאלי במספר האפשרויות, השיטה הופכת לבלתי מעשית חישובית כבר עבור מספר בינוני של קודקודים","בחירה אקראית של מסלול יחיד ללא כל בדיקה נוספת","שימוש באלגוריתם דייקסטרה בלבד לפתרון TSP","התעלמות מוחלטת ממשקלי הקשתות בגרף"],a:0,e:"גישת הכוח הגס בודקת את כל האפשרויות ובוחרת את הטובה ביותר - מובטח שהיא מוצאת את הפתרון האופטימלי, אך בשל הגידול הפקטוריאלי של מספר המסלולים (n!) היא הופכת לבלתי אפשרית חישובית כבר במספר קודקודים בינוני יחסית."},
 {u:5,qb:true,s:"TSP, מחלק הדואר הסיני ו-VRP.",q:"מדוע רשת עם כבישים דו-סטריים (שבהם ההלוך שונה מהחזור) נחשבת מורכבת יותר לפתרון VRP מרשת עם כבישים חד-סטריים בלבד?",o:["כביש דו-סטרי מחייב להתייחס לשני הכיוונים כאל שני מסלולים אפשריים נפרדים (הלוך והחזור עשויים להיות שונים בעלות/זמן/זמינות), מה שלמעשה מכפיל את גודל מרחב האפשרויות שיש לשקול, בעוד רשת חד-סטרית מצמצמת ומגבילה אותו","כביש דו-סטרי תמיד קצר יותר מכביש חד-סטרי","אין הבדל תפעולי כלשהו בין רשת חד-סטרית לדו-סטרית","רשת חד-סטרית תמיד קשה יותר לפתרון מרשת דו-סטרית"],a:0,e:"בכביש דו-סטרי, ההלוך והחזור עשויים להיחשב כשני \"מסלולים\" נפרדים בעלי מאפיינים שונים - מה שמגדיל את מרחב האפשרויות שהאלגוריתם צריך לשקול, בהשוואה לרשת המוגבלת מראש של כבישים חד-סטריים בלבד."},
 {u:5,qb:true,s:"TSP, מחלק הדואר הסיני ו-VRP.",q:"במה שונה VRP \"דינמי\" (שבו הזמנות נכנסות תוך כדי הנסיעה, כגון הזמנות משלוח פיצה) מ-VRP סטטי מבחינת יכולת התכנון מראש?",o:["ב-VRP דינמי לא ניתן לבנות מסלול סופי מראש משום שהביקוש (מי הזמין ומתי) מתעדכן בזמן אמת תוך כדי הביצוע, בעוד VRP סטטי מניח שכל הביקושים ידועים מראש לפני תחילת התכנון","שני הסוגים מניחים תמיד שכל הביקוש ידוע וקבוע מראש","VRP דינמי קל יותר לתכנון כי יש פחות נתונים לטפל בהם","אין כל הבדל מעשי בין השניים בתכנון מסלולים"],a:0,e:"בדוגמת הפיצרייה - לא ידוע מראש מי יזמין ומתי, ולכן לא ניתן לבנות מסלול הפצה סופי לפני תחילת המשמרת; יש להתאים את המסלול תוך כדי תנועה - בשונה מ-VRP סטטי שבו כל הביקושים ידועים מראש."},
+
+/* ===== שאלות קריאת תרשים (שדה d) =====
+   התרשימים של עקומת הזרימה, ציור הבית ודוגמת הספרייה לקוחים מהמצגות;
+   גרף דייקסטרה ורשת הזרימה נבנו כאן לתרגול, והתשובות חושבו ואומתו. */
+{u:2,d:"euler_house",qb:1,s:"לפניך «ציור הבית» — הצורה שמנסים לצייר בלי להרים את העיפרון ובלי לעבור פעמיים על אותו קו.",q:"אילו קודקודים הם בדרגה אי-זוגית, ומה זה מחייב לגבי נקודת ההתחלה?",o:["A ו-B, הפינות התחתונות — ולכן חייבים להתחיל באחת מהן ולסיים בשנייה","C ו-D, הפינות העליונות — ולכן חייבים להתחיל באחת מהן","E בלבד, קודקוד הגג — ולכן חייבים להתחיל בו","אין קודקודים בדרגה אי-זוגית — אפשר להתחיל מכל קודקוד ולחזור אליו"],a:0,e:"סופרים כמה קשתות נוגעות בכל קודקוד: A מחובר ל-B, C ו-D, וכך גם B — שניהם בדרגה 3. C ו-D בדרגה 4, ו-E בדרגה 2. כלומר יש בדיוק שני קודקודים אי-זוגיים, ולכן קיים מסלול אוילר אך הוא אינו מעגלי: מתחילים באחד מהאי-זוגיים ומסיימים בשני."},
+{u:5,d:"dijkstra_practice",qb:1,s:"גרף ממושקל; המשקלים הם זמני נסיעה בדקות.",q:"מהו המרחק הקצר ביותר מ-A ל-E?",o:["11","12","13","10"],a:0,e:"A→C→B→D→E = 2+1+5+3 = 11. החלופות ארוכות יותר: A→B→D→E = 4+5+3 = 12, ו-A→C→D→E = 2+8+3 = 13. שימו לב שהקשת הזולה ביותר מ-A היא A→C=2 — אבל בחירת קשתות זולות אחת-אחת אינה מבטיחה מסלול קצר; דייקסטרה חמדני בבחירת הקודקוד הבא לנעילה, לא בבחירת קשת."},
+{u:3,d:"maxflow_practice",qb:1,s:"רשת זרימה מכוונת; המספרים הם קיבולות הקשתות.",q:"מהי הזרימה המקסימלית מ-S ל-T?",o:["7","8","9","6"],a:0,e:"סך הקיבולת היוצאת מ-S הוא 4+3=7, וזהו חסם עליון. אפשר להגיע אליו בפועל: S→A→T מעביר 3, S→B→T מעביר 3, והיחידה שנותרה ב-A עוברת A→B→T. סה״כ 7. גם החתך {S→A, S→B} שווה 7 — ואכן זרימה מקסימלית = חתך מינימלי. שימו לב ש-8 הוא סך הקיבולת הנכנסת ל-T, וזה חסם רופף יותר."},
+{u:1,d:"flow_density",qb:1,s:"עקומת הזרימה כפונקציה של הצפיפות. קו אופקי בגובה q=1,000 חותך אותה בשתי נקודות.",q:"מה המשמעות התפעולית של שתי נקודות החיתוך?",o:["אותה זרימה מתקבלת פעמיים: פעם בצפיפות נמוכה ומהירות גבוהה, ופעם בצפיפות גבוהה ומהירות נמוכה","יש טעות במדידה — לכל ערך זרימה מתאימה צפיפות אחת בלבד","הכביש חרג מהקיבולת ולכן הזרימה נספרת פעמיים","בשתי הנקודות הצפיפות שווה למחצית צפיפות הפקק"],a:0,e:"העקומה פרבולית, ולכן כל ערך זרימה שמתחת לשיא מתקבל בשתי צפיפויות — אחת בזרימה חופשית ואחת בגודש. רק בשיא עצמו, ב-D_j/2, הפתרון יחיד. מכאן שאי אפשר להסיק את מצב הכביש מנתון הזרימה לבדו: צריך גם את המהירות או את הצפיפות."},
+{u:4,d:"median_axis",qb:1,s:"ציר ה-X של דוגמת הספרייה; גודל העיגול מייצג את מספר הסטודנטים בפקולטה.",q:"מהי קואורדינטת ה-X של המיקום האופטימלי?",o:["6","8","7.6","10"],a:0,e:"סך המשקלים הוא 2040, ולכן החציון הוא 1020. המשקל המצטבר לאורך הציר: 190 בנקודה 0, 500 בנקודה 5, ו-1030 בנקודה 6 — זו הפעם הראשונה שהוא עובר את 1020, ולכן X=6. הערך 7.6 הוא הממוצע המשוקלל, וזו בדיוק המלכודת: הפתרון הוא חציון משוקלל, לא ממוצע ולא מרכז גיאומטרי."},
+{u:2,d:"vector_types",qb:1,s:"שלוש הישויות הווקטוריות הבסיסיות.",q:"איזו מהן משמשת לייצוג רשת כבישים?",o:["ב׳ — קו","א׳ — נקודה","ג׳ — פוליגון","שלושתן מתאימות באותה מידה"],a:0,e:"שלוש הישויות הווקטוריות הן נקודה (אנטנה, באר, חנות), קו (כביש, נהר, פסי רכבת, צינור) ופוליגון (מבנה, ייעוד קרקע). כביש הוא ישות אורכית ולכן מיוצג כקו. ההחלטה תלויה גם בקנה המידה — בקנה מידה גדול מאוד אפשר לייצג כביש כפוליגון — אבל ברשת כבישים הייצוג המקובל הוא קו."},
 ];
 
 const UNITS={
@@ -1422,6 +1438,7 @@ function renderBank(){
       ${list.map(q=>{n++;return `<div class="bank-q">
         <div><span class="bank-n">שאלה ${n}</span>${q.prof?'<span class="bank-star">⭐ שאלת מרצה</span>':''}${q.past?'<span class="bank-past">📎 ממבחן קודם</span>':''}${q.cut?'<span class="bank-cut">⬜ ירד מהמיקוד</span>':''}${q.bank?'<span class="bank-bank">📚 מאגר חיצוני</span>':''}${q.qb?'<span class="bank-qb">🧩 מאגר תרגול</span>':''}</div>
         ${q.s?`<div class="bank-s">${esc(q.s)}</div>`:''}
+        ${diagramHTML(q)}
         <div class="bank-qt">${esc(q.q)}</div>
         ${q.o.map((o,j)=>`<div class="bank-o ${j===q.a?'is-ans':''}">${LETTERS[j]}. ${esc(o)}${j===q.a?' ✔':''}</div>`).join("")}
         <div class="bank-e"><b>הסבר:</b> ${esc(q.e)}</div>
@@ -1513,6 +1530,85 @@ function goTo(i){
   if(i<0||i>=state.pool.length)return;
   state.idx=i; renderQuestion(); window.scrollTo({top:0,behavior:"smooth"});
 }
+/* =============== DIAGRAMS ===============
+   תרשימים לשאלות קריאת-תרשים. כל SVG משתמש ב-currentColor, ולכן הוא
+   מקבל את צבע הטקסט ועובד גם במצב כהה. המפתח הוא השדה d שבשאלה. */
+const DIAGRAMS={
+euler_house:`<svg viewBox="0 0 220 175" role="img" aria-label="תרשים הבית הקלאסי">
+<g fill="none" stroke="currentColor" stroke-width="2">
+<path d="M40 60 H160 V140 H40 Z"/><path d="M40 60 L100 20 L160 60"/>
+<path d="M40 60 L160 140"/><path d="M160 60 L40 140"/></g>
+<g fill="currentColor" font-size="13" font-weight="700">
+<circle cx="40" cy="60" r="4"/><text x="22" y="58">C</text>
+<circle cx="160" cy="60" r="4"/><text x="168" y="58">D</text>
+<circle cx="40" cy="140" r="4"/><text x="20" y="158">A</text>
+<circle cx="160" cy="140" r="4"/><text x="168" y="158">B</text>
+<circle cx="100" cy="20" r="4"/><text x="94" y="14">E</text></g></svg>`,
+
+dijkstra_practice:`<svg viewBox="0 0 270 155" role="img" aria-label="גרף ממושקל לתרגול מסלול קצר">
+<g fill="none" stroke="currentColor" stroke-width="2">
+<path d="M20 75 L85 20"/><path d="M20 75 L85 130"/><path d="M85 20 L85 130"/>
+<path d="M85 20 L165 75"/><path d="M85 130 L165 75"/><path d="M165 75 L245 75"/></g>
+<g fill="currentColor" font-size="12">
+<text x="42" y="40">2</text><text x="42" y="115">4</text><text x="90" y="78">1</text>
+<text x="132" y="40">8</text><text x="132" y="112">5</text><text x="200" y="68">3</text></g>
+<g fill="currentColor" font-size="13" font-weight="700">
+<circle cx="20" cy="75" r="5"/><text x="20" y="98" text-anchor="middle">A</text>
+<circle cx="85" cy="20" r="5"/><text x="85" y="13" text-anchor="middle">C</text>
+<circle cx="85" cy="130" r="5"/><text x="85" y="150" text-anchor="middle">B</text>
+<circle cx="165" cy="75" r="5"/><text x="165" y="62" text-anchor="middle">D</text>
+<circle cx="245" cy="75" r="5"/><text x="245" y="60" text-anchor="middle">E</text></g></svg>`,
+
+maxflow_practice:`<svg viewBox="0 0 230 160" role="img" aria-label="רשת זרימה עם קיבולות">
+<defs><marker id="ar" markerWidth="9" markerHeight="9" refX="8" refY="3"
+ orient="auto"><path d="M0 0 L8 3 L0 6 z" fill="currentColor"/></marker></defs>
+<g fill="none" stroke="currentColor" stroke-width="2" marker-end="url(#ar)">
+<path d="M28 78 L100 32"/><path d="M28 78 L100 124"/><path d="M110 42 L110 114"/>
+<path d="M120 32 L192 78"/><path d="M120 124 L192 78"/></g>
+<g fill="currentColor" font-size="12">
+<text x="52" y="46">4</text><text x="52" y="118">3</text><text x="115" y="82">2</text>
+<text x="163" y="46">3</text><text x="163" y="118">5</text></g>
+<g fill="currentColor" font-size="13" font-weight="700">
+<circle cx="20" cy="78" r="6"/><text x="20" y="102" text-anchor="middle">S</text>
+<circle cx="110" cy="28" r="6"/><text x="110" y="17" text-anchor="middle">A</text>
+<circle cx="110" cy="128" r="6"/><text x="110" y="150" text-anchor="middle">B</text>
+<circle cx="200" cy="78" r="6"/><text x="200" y="102" text-anchor="middle">T</text></g></svg>`,
+
+flow_density:`<svg viewBox="0 0 250 160" role="img" aria-label="עקומת זרימה מול צפיפות">
+<g fill="none" stroke="currentColor" stroke-width="2">
+<path d="M30 130 H225"/><path d="M30 130 V20"/>
+<path d="M30 130 Q127 -10 215 130"/></g>
+<g stroke="currentColor" stroke-width="1" stroke-dasharray="4 3">
+<path d="M122 130 V50"/></g>
+<g fill="currentColor" font-size="11">
+<text x="8" y="26">q</text><text x="228" y="145">D</text>
+<text x="104" y="146">D_j/2</text><text x="205" y="146">D_j</text>
+<text x="128" y="46">q_max</text></g></svg>`,
+
+median_axis:`<svg viewBox="0 0 270 120" role="img" aria-label="ציר X של דוגמת הספרייה">
+<g fill="none" stroke="currentColor" stroke-width="2"><path d="M20 80 H250"/></g>
+<g fill="currentColor" font-size="11" text-anchor="middle">
+<circle cx="30" cy="80" r="4"/><text x="30" y="98">0</text><text x="30" y="68">190</text>
+<circle cx="80" cy="80" r="5"/><text x="80" y="98">5</text><text x="80" y="68">310</text>
+<circle cx="90" cy="80" r="7"/><text x="97" y="98">6</text><text x="100" y="60">530</text>
+<circle cx="110" cy="80" r="5"/><text x="112" y="98">8</text><text x="118" y="68">280</text>
+<circle cx="130" cy="80" r="6"/><text x="134" y="98">10</text><text x="140" y="60">410</text>
+<circle cx="170" cy="80" r="5"/><text x="170" y="98">14</text><text x="170" y="68">320</text></g>
+<g fill="currentColor" font-size="10"><text x="188" y="30">גודל העיגול = משקל</text>
+<text x="188" y="44">סה״כ 2040 · חציון 1020</text></g></svg>`,
+
+vector_types:`<svg viewBox="0 0 250 112" role="img" aria-label="שלוש ישויות וקטוריות">
+<g fill="none" stroke="currentColor" stroke-width="2">
+<path d="M95 26 l12 20 l-10 22 l14 14"/>
+<path d="M175 22 l38 6 l8 32 l-30 16 l-20 -22 z"/></g>
+<circle cx="30" cy="44" r="6" fill="currentColor"/>
+<g fill="currentColor" font-size="13" font-weight="700" text-anchor="middle">
+<text x="30" y="104">א׳</text><text x="103" y="104">ב׳</text><text x="195" y="104">ג׳</text></g></svg>`
+};
+function diagramHTML(q){
+  return q.d&&DIAGRAMS[q.d]?`<div class="diagram">${DIAGRAMS[q.d]}</div>`:"";
+}
+
 function renderQuestion(){
   const q=state.pool[state.idx], info=UNITS[q.u];
   const chosen=state.answers[state.idx], done=chosen!=null;
@@ -1534,6 +1630,7 @@ function renderQuestion(){
     <div class="card">
       <span class="badge" style="background:${info.hex}">${q.u===6?esc(info.name):"יחידה "+q.u+" · "+esc(info.name)}</span>${q.prof?'<span class="badge badge-prof">⭐ שאלת מרצה</span>':''}${q.past?'<span class="badge badge-past">📎 ממבחן קודם</span>':''}${q.cut?'<span class="badge badge-cut">⬜ ירד מהמיקוד</span>':''}${q.bank?'<span class="badge badge-bank">📚 מאגר חיצוני</span>':''}${q.qb?'<span class="badge badge-qb">🧩 מאגר תרגול</span>':''}
       <div class="scenario">${esc(q.s)}</div>
+      ${diagramHTML(q)}
       <p class="qtext">${esc(q.q)}</p>
       <div class="opts" id="opts">${q.o.map((o,i)=>{
         let cls="", mark="";
